@@ -1,1 +1,30 @@
-/* You can add global styles to this file, and also import other style files */
+html, body {
+    height: 100%;
+    margin: 0;
+  }
+  
+  app-root {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+  
+  app-login{
+    height: 100%;
+  }
+
+  app-register{
+    height: 100%;
+  }
+
+  .error-message {
+    position: fixed;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000; /* Asegura que esté por encima del resto del contenido */
+    width: 50%; /* Ajusta el ancho según sea necesario */
+    text-align: center;
+    pointer-events: none; /* Hace que no interactúe con el resto del HTML */
+  }
+  

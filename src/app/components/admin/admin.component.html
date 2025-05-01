@@ -1,0 +1,125 @@
+<div class="container py-4">
+  <h2>Gestión de Casas</h2>
+  <form [formGroup]="casaForm" (ngSubmit)="crearCasa()" class="mb-3">
+    <input
+      formControlName="nombre"
+      class="form-control mb-2"
+      placeholder="Nombre de la casa"
+    />
+    <button type="submit" class="btn btn-primary">
+      Crear Casa
+    </button>
+  </form>
+
+  <ul class="list-group mb-5">
+    <li
+      *ngFor="let casa of casas"
+      class="list-group-item d-flex justify-content-between align-items-center"
+    >
+      {{ casa.nombre }}
+      <div>
+        <button (click)="editarCasa(casa)" class="btn btn-sm btn-warning me-2">
+          Editar
+        </button>
+        <button (click)="eliminarCasa(casa.id)" class="btn btn-sm btn-danger">
+          Eliminar
+        </button>
+      </div>
+    </li>
+  </ul>
+
+  <h2>Gestión de Trabajadores</h2>
+  <form
+    [formGroup]="trabajadorForm"
+    (ngSubmit)="crearTrabajador()"
+    class="mb-3"
+  >
+    <input
+      formControlName="email"
+      class="form-control mb-2"
+      placeholder="Email"
+    />
+    <input
+      formControlName="password"
+      class="form-control mb-2"
+      placeholder="Contraseña"
+    />
+    <input
+      formControlName="firstName"
+      class="form-control mb-2"
+      placeholder="Nombre"
+    />
+    <input
+      formControlName="lastName"
+      class="form-control mb-2"
+      placeholder="Apellido"
+    />
+    <button type="submit" class="btn btn-primary">
+      Crear Trabajador
+    </button>
+  </form>
+
+  <ul class="list-group">
+    <li
+      *ngFor="let t of trabajadores"
+      class="list-group-item d-flex justify-content-between align-items-center"
+    >
+      {{ t.firstName }} {{ t.lastName }} ({{ t.id }})
+      <div>
+        <button
+          (click)="editarTrabajador(t)"
+          class="btn btn-sm btn-warning me-2"
+        >
+          Editar
+        </button>
+        <button
+          (click)="eliminarTrabajador(t.id)"
+          class="btn btn-sm btn-danger"
+        >
+          Eliminar
+        </button>
+      </div>
+    </li>
+  </ul>
+</div>
+
+<!-- Modal de edición -->
+<div class="modal fade" id="editarModal" tabindex="-1" aria-labelledby="editarModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <form [formGroup]="trabajadorFormActualizar" (ngSubmit)="actualizarTrabajador()" class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editarModalLabel">Editar Trabajador</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+      <div class="modal-body">
+        <input formControlName="email" class="form-control mb-2" placeholder="Email" />
+        <input formControlName="password" class="form-control mb-2" placeholder="Nueva Contraseña (opcional)" />
+        <input formControlName="firstName" class="form-control mb-2" placeholder="Nombre" />
+        <input formControlName="lastName" class="form-control mb-2" placeholder="Apellido" />
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="submit" class="btn btn-primary">Actualizar</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Modal de edición de Casa -->
+<div class="modal fade" id="editarCasaModal" tabindex="-1" aria-labelledby="editarCasaModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <form [formGroup]="casaFormActualizar" (ngSubmit)="actualizarCasa()" class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editarCasaModalLabel">Editar Casa</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+      <div class="modal-body">
+        <input formControlName="nombre" class="form-control mb-2" placeholder="Nombre de la casa" />
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="submit" class="btn btn-primary">Actualizar</button>
+      </div>
+    </form>
+  </div>
+</div>
