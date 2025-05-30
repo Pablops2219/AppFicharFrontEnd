@@ -1,0 +1,60 @@
+<div class="d-flex flex-column flex-lg-row justify-content-between align-items-start">
+  <main class="col-12 px-4">
+    <div class="d-flex justify-content-between align-items-center pt-3 pb-2 mb-3 border-bottom">
+      <h1 class="h2">Importar usuarios desde Excel</h1>
+    </div>
+
+    <input type="file" (change)="onFileChange($event)" class="form-control mb-3" accept=".xlsx, .xls" />
+
+    <button class="btn btn-primary w-100 my-3 py-2" (click)="importarUsuarios()"
+      [disabled]="!excelUsuarios.length">Importar usuarios</button>
+
+    <div *ngIf="excelUsuarios.length > 0" class="mb-5">
+      <h3 class="h4 border-bottom pb-2">Usuarios a importar</h3>
+      <div class="table-responsive">
+        <table class="table table-striped table-bordered">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Nombre</th>
+              <th>Apellidos</th>
+              <th>Email</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let usuario of excelUsuarios; let i = index">
+              <td>{{ i + 1 }}</td>
+              <td>{{ usuario.nombre }}</td>
+              <td>{{ usuario.apellidos }}</td>
+              <td>{{ usuario.email }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div *ngIf="usuariosSinContrasena.length > 0">
+      <h3 class="h4 border-bottom pb-2">Usuarios sin contraseña</h3>
+      <div class="table-responsive">
+        <table class="table table-striped table-bordered">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Nombre</th>
+              <th>Apellidos</th>
+              <th>Email</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let usuario of usuariosSinContrasena; let i = index">
+              <td>{{ i + 1 }}</td>
+              <td>{{ usuario.nombre }}</td>
+              <td>{{ usuario.apellidos }}</td>
+              <td>{{ usuario.email }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+</div>

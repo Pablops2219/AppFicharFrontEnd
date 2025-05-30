@@ -1,18 +1,19 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { tap } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 
 export class AuthService {
-  private apiUrl = 'http://localhost:8080';
+  private baseUrl = environment.authUrl;
 
   constructor(private http: HttpClient) {}
 
   login(credentials: { email: string; password: string }) {
-    return this.http.post<{ jwt: string }>(`${this.apiUrl}/auth/log-in`, credentials)
+    return this.http.post<{ jwt: string }>(`${this.baseUrl}/log-in`, credentials)
       .pipe(tap(response => {
         localStorage.setItem('jwt', response.jwt);
       }));
@@ -25,8 +26,9 @@ export class AuthService {
     firstName: string;
     lastName: string;
     rolesRequest: { roleListName: string[] };
+    roleListName?: string[];
   }) {
-    return this.http.post(`${this.apiUrl}/auth/sign-up`, userData);
+    return this.http.post(`${this.baseUrl}/sign-up`, userData);
   }
 
   logout() {
@@ -42,7 +44,7 @@ export class AuthService {
   }
 
   getUserData(): any {
-    const token = localStorage.getItem('jwt'); // O donde guardes tu token
+    const token = localStorage.getItem('jwt');
     if (!token) {
       return null;
     }
@@ -53,7 +55,6 @@ export class AuthService {
   
     const authoritiesList = payload.authorities.split(',');
   
-    // Separa roles y permisos
     const roles = authoritiesList.filter((auth: string) => auth.startsWith('ROLE_'));
     const permissions = authoritiesList.filter((auth: string) => !auth.startsWith('ROLE_'));
     
@@ -96,5 +97,13 @@ export class AuthService {
   
     return 0; 
   }
+
+  confirmUser(credentials: { email: string; password: string }) {
+    return this.http.post<{ jwt: string }>(`${this.baseUrl}/confirm-user`, credentials)
+      .pipe(tap(response => {
+        localStorage.setItem('jwt', response.jwt);
+      }));
+  }
+
   
 }

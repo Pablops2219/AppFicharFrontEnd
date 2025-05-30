@@ -13,6 +13,10 @@ html, body {
     height: 100%;
   }
 
+  app-loginsincontra{
+    height: 100%;
+  }
+
   app-register{
     height: 100%;
   }

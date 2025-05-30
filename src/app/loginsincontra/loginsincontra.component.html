@@ -1,0 +1,47 @@
+<div class="d-flex align-items-center py-4" cz-shortcut-listen="true">
+  @if (errorMessage) {
+  <div class="alert alert-danger error-message" role="alert">
+    {{ errorMessage }}
+  </div>
+  }
+
+  <main class="form-signin m-auto">
+    <form [formGroup]="form" (ngSubmit)="login()">
+      <h1 class="h3 mb-3 fw-normal">Introduce tu email<br> y contraseña para<br> crear la cuenta</h1>
+
+      <div class="form-floating">
+        <input
+          type="email"
+          formControlName="email"
+          class="form-control"
+          id="floatingInput"
+          placeholder="ejemplo@gmail.com"
+        />
+        <label for="floatingInput">Email</label>
+      </div>
+      <div class="form-floating">
+        <input
+          type="password"
+          formControlName="password"
+          class="form-control"
+          id="floatingPassword"
+          placeholder="ejemplo@gmail.com"
+        />
+        <label for="floatingPassword">Contraseña</label>
+      </div>
+      <button
+        type="submit"
+        class="btn btn-primary w-100 py-2 my-2"
+        type="submit"
+      >
+        Iniciar sesión
+      </button>
+      <div class="my-2">
+        <a href="" [routerLink]="['/register']">No tienes una cuenta?</a>
+      </div>
+      <div class="my-2">
+        <a href="" [routerLink]="['/login']">Tienes ya una cuenta?</a>
+      </div>
+    </form>
+  </main>
+</div>

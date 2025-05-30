@@ -6,9 +6,7 @@
       class="form-control mb-2"
       placeholder="Nombre de la casa"
     />
-    <button type="submit" class="btn btn-primary">
-      Crear Casa
-    </button>
+    <button type="submit" class="btn btn-primary">Crear Casa</button>
   </form>
 
   <ul class="list-group mb-5">
@@ -54,12 +52,36 @@
       class="form-control mb-2"
       placeholder="Apellido"
     />
-    <button type="submit" class="btn btn-primary">
-      Crear Trabajador
-    </button>
+    <div class="input-group mb-3 rounded">
+      <button
+        class="btn btn-outline-dark w-100 dropdown-toggle"
+        type="button"
+        data-bs-toggle="dropdown"
+        data-bs-auto-close="outside"
+        aria-expanded="false"
+      >
+        Selecciona roles
+      </button>
+
+      <ul class="dropdown-menu w-100 px-2">
+        <li *ngFor="let rol of rolesDisponibles; let i = index">
+          <input
+            class="form-check-input me-1"
+            type="checkbox"
+            [id]="'rol-' + i"
+            [value]="rol"
+            [checked]="rolesSeleccionados.includes(rol)"
+            (change)="toggleRol(rol)"
+          />
+          <label class="form-check-label" [for]="'rol-' + i">{{ rol }}</label>
+        </li>
+      </ul>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Crear Trabajador</button>
   </form>
 
-  <ul class="list-group">
+  <ul class="list-group mb-5">
     <li
       *ngFor="let t of trabajadores"
       class="list-group-item d-flex justify-content-between align-items-center"
@@ -67,7 +89,7 @@
       {{ t.firstName }} {{ t.lastName }} ({{ t.id }})
       <div>
         <button
-          (click)="editarTrabajador(t)"
+          (click)="editarFormActualizarTrabajador(t)"
           class="btn btn-sm btn-warning me-2"
         >
           Editar
@@ -81,24 +103,159 @@
       </div>
     </li>
   </ul>
+
+  <h2>Managers</h2>
+  <ul class="list-group">
+    <li
+      *ngFor="let m of managers"
+      class="list-group-item d-flex justify-content-between align-items-center"
+    >
+      <strong>{{ m.firstName }} {{ m.lastName }}</strong>
+      <div>
+        <ng-container *ngIf="m.casasVigiladas?.length > 0; else noCasas">
+          <span
+            *ngFor="let casa of m.casasVigiladas"
+            class="badge bg-primary me-1"
+          >
+            {{ casa.nombre }}
+          </span>
+        </ng-container>
+        <ng-template #noCasas>
+          <span class="badge bg-secondary">Sin casas</span>
+        </ng-template>
+      </div>
+      <button class="btn btn-sm btn-outline-secondary" (click)="abrirModal(m)">
+        Editar
+      </button>
+    </li>
+  </ul>
+</div>
+<!-- Modal -->
+<div
+  class="modal fade"
+  id="modalEditarManager"
+  tabindex="-1"
+  aria-labelledby="modalEditarLabel"
+  aria-hidden="true"
+  #modal
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalEditarLabel">
+          Editar casas de {{ managerSeleccionado?.firstName }}
+          {{ managerSeleccionado?.lastName }}
+        </h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Cerrar"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <div *ngFor="let casa of casas">
+          <input
+            type="checkbox"
+            [value]="casa.id"
+            [checked]="casaSeleccionada(managerSeleccionado, casa.id)"
+            (change)="onCasaChange(managerSeleccionado, casa.id, $event)"
+          />
+          {{ casa.nombre }}
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Cancelar
+        </button>
+        <button
+          type="button"
+          class="btn btn-success"
+          (click)="guardarCambios(managerSeleccionado)"
+        >
+          Guardar
+        </button>
+      </div>
+    </div>
+  </div>
 </div>
 
 <!-- Modal de edición -->
-<div class="modal fade" id="editarModal" tabindex="-1" aria-labelledby="editarModalLabel" aria-hidden="true">
+<div
+  class="modal fade"
+  id="editarModal"
+  tabindex="-1"
+  aria-labelledby="editarModalLabel"
+  aria-hidden="true"
+>
   <div class="modal-dialog">
-    <form [formGroup]="trabajadorFormActualizar" (ngSubmit)="actualizarTrabajador()" class="modal-content">
+    <form
+      [formGroup]="trabajadorFormActualizar"
+      (ngSubmit)="actualizarTrabajador()"
+      class="modal-content"
+    >
       <div class="modal-header">
         <h5 class="modal-title" id="editarModalLabel">Editar Trabajador</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Cerrar"
+        ></button>
       </div>
       <div class="modal-body">
-        <input formControlName="email" class="form-control mb-2" placeholder="Email" />
-        <input formControlName="password" class="form-control mb-2" placeholder="Nueva Contraseña (opcional)" />
-        <input formControlName="firstName" class="form-control mb-2" placeholder="Nombre" />
-        <input formControlName="lastName" class="form-control mb-2" placeholder="Apellido" />
+        <input
+          formControlName="email"
+          class="form-control mb-2"
+          placeholder="Email"
+        />
+        <input
+          formControlName="password"
+          class="form-control mb-2"
+          placeholder="Nueva Contraseña (opcional)"
+        />
+        <input
+          formControlName="firstName"
+          class="form-control mb-2"
+          placeholder="Nombre"
+        />
+        <input
+          formControlName="lastName"
+          class="form-control mb-2"
+          placeholder="Apellido"
+        />
+        <div class="input-group mb-3 rounded">
+          <button
+            class="btn btn-outline-dark w-100 dropdown-toggle"
+            type="button"
+            data-bs-toggle="dropdown"
+            data-bs-auto-close="outside"
+            aria-expanded="false"
+          >
+            Selecciona roles
+          </button>
+
+          <ul class="dropdown-menu w-100 px-2">
+            <li *ngFor="let rol of rolesDisponibles; let i = index">
+              <input
+                class="form-check-input me-1"
+                type="checkbox"
+                [id]="'rol-' + i"
+                [value]="rol"
+                [checked]="rolesSeleccionadosActualizar.includes(rol)"
+                (change)="toggleRolActualizar(rol)"
+              />
+              <label class="form-check-label" [for]="'rol-' + i">{{
+                rol
+              }}</label>
+            </li>
+          </ul>
+        </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Cancelar
+        </button>
         <button type="submit" class="btn btn-primary">Actualizar</button>
       </div>
     </form>
@@ -106,18 +263,39 @@
 </div>
 
 <!-- Modal de edición de Casa -->
-<div class="modal fade" id="editarCasaModal" tabindex="-1" aria-labelledby="editarCasaModalLabel" aria-hidden="true">
+<div
+  class="modal fade"
+  id="editarCasaModal"
+  tabindex="-1"
+  aria-labelledby="editarCasaModalLabel"
+  aria-hidden="true"
+>
   <div class="modal-dialog">
-    <form [formGroup]="casaFormActualizar" (ngSubmit)="actualizarCasa()" class="modal-content">
+    <form
+      [formGroup]="casaFormActualizar"
+      (ngSubmit)="actualizarCasa()"
+      class="modal-content"
+    >
       <div class="modal-header">
         <h5 class="modal-title" id="editarCasaModalLabel">Editar Casa</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Cerrar"
+        ></button>
       </div>
       <div class="modal-body">
-        <input formControlName="nombre" class="form-control mb-2" placeholder="Nombre de la casa" />
+        <input
+          formControlName="nombre"
+          class="form-control mb-2"
+          placeholder="Nombre de la casa"
+        />
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Cancelar
+        </button>
         <button type="submit" class="btn btn-primary">Actualizar</button>
       </div>
     </form>

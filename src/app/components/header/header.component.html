@@ -64,15 +64,15 @@
                 </svg>
                 Admin
               </a>
-            </li><!--
-            <li class="nav-item text-center">
-              <a href="#" class="nav-link text-white">
+            </li>
+            <li class="nav-item text-center" *ngIf="userPowerLevel >= 3">
+              <a href="" [routerLink]="[ '/importarusuarios' ]"  class="nav-link text-white">
                 <svg class="bi d-block mx-auto" width="24" height="24" fill="white">
                   <use xlink:href="#grid"></use>
                 </svg>
-                Products
+                Importar
               </a>
-            </li>
+            </li><!--
             <li class="nav-item text-center">
               <a href="#" class="nav-link text-white">
                 <svg class="bi d-block mx-auto" width="24" height="24" fill="white">
@@ -123,15 +123,15 @@
                   </svg>
                   Admin
                 </a>
-              </li><!--
-              <li>
-                <a href="#" class="nav-link text-white">
+              </li>
+              <li *ngIf="userPowerLevel >= 3">
+                <a href="" href="" [routerLink]="[ '/importarusuarios' ]"   class="nav-link text-white">
                   <svg class="bi pe-none me-2" width="24" height="24" fill="white">
                     <use xlink:href="#grid"></use>
                   </svg>
-                  Products
+                  Importar
                 </a>
-              </li>
+              </li><!--
               <li>
                 <a href="#" class="nav-link text-white">
                   <svg class="bi pe-none me-2" width="24" height="24" fill="white">

@@ -5,6 +5,8 @@ import { RegisterComponent } from './components/register/register.component';
 import { ConsultasComponent } from './components/consultas/consultas.component';
 import { AdminComponent } from './components/admin/admin.component';
 import { AuthGuard } from './services/auth.guard';
+import { ImportarusuariosComponent } from './importarusuarios/importarusuarios.component';
+import { LoginsincontraComponent } from './loginsincontra/loginsincontra.component';
 
 export const routes: Routes = [
   {
@@ -15,6 +17,10 @@ export const routes: Routes = [
   {
     path: 'login',
     component: LoginComponent,
+  },
+  {
+    path: 'loginsincontra',
+    component: LoginsincontraComponent,
   },
   {
     path: 'register',
@@ -38,4 +44,10 @@ export const routes: Routes = [
     canActivate: [AuthGuard],
     data: { minPowerLevel: 3 }
   },
+  {
+    path: 'importarusuarios',
+    component: ImportarusuariosComponent,
+    canActivate: [AuthGuard],
+    data: { minPowerLevel: 3 }
+  }
 ];

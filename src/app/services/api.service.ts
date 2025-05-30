@@ -2,24 +2,32 @@ import { inject, Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Fichaje } from '../interfaces/fichaje';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ApiService {
-  private baseUrl = 'http://localhost:8080/api';
+  private baseUrl = environment.apiUrl;
 
   constructor(private http: HttpClient) {}
 
   listMisFichajes(): Observable<any> {
     return this.http.get(`${this.baseUrl}/miusuario/misfichajes`);
   }
-  
+
+  listFichajesManager(): Observable<any> {
+    return this.http.get(`${this.baseUrl}/miusuario/manager-fichajes`);
+  }
+
+  listCasasManager(): Observable<any> {
+    return this.http.get(`${this.baseUrl}/miusuario/manager-casas`);
+  }
+
   // Obtener todos los fichajes
   listFichajes(): Observable<any> {
     return this.http.get(`${this.baseUrl}/fichajes`);
   }
-
 
   // Obtener todas las casas
   listCasas(): Observable<any> {
@@ -68,13 +76,38 @@ export class ApiService {
     return this.http.patch<any>(`${this.baseUrl}/usuarios/${id}`, trabajador);
   }
 
-  // Eliminar un trabajador por ID
   eliminarTrabajador(id: number): Observable<any> {
     return this.http.delete<any>(`${this.baseUrl}/usuarios/${id}`);
   }
 
-  // Eliminar una casa por ID
   eliminarCasa(id: number): Observable<any> {
     return this.http.delete<any>(`${this.baseUrl}/casas/${id}`);
+  }
+
+  crearTrabajador(userData: {
+    email: string;
+    password: string;
+    firstName: string;
+    lastName: string;
+    rolesRequest: { roleListName: string[] };
+    roleListName?: string[];
+  }) {
+    return this.http.post(`${this.baseUrl}/usuarios`, userData);
+  }
+
+  getManagers(): Observable<any> {
+    return this.http.get(`${this.baseUrl}/usuarios/managers`);
+  }
+
+  updateManager(body: any): Observable<any> {
+    return this.http.put(`${this.baseUrl}/usuarios/managers`, body);
+  }
+
+  importarUsuarios(usuarios: any[]) {
+    return this.http.post(`${this.baseUrl}/usuarios/importar`, usuarios);
+  }
+
+  getUsuariosSinContrasena(): Observable<any> {
+    return this.http.get(`${this.baseUrl}/usuarios/sin-contrasena`);
   }
 }

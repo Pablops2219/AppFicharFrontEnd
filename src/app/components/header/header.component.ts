@@ -18,5 +18,7 @@ export class HeaderComponent {
     this.userPowerLevel = this.authService.getUserPowerLevel();
   }
 
-  onLogout() {}
+  onLogout() {
+    this.authService.logout();
+  }
 }
